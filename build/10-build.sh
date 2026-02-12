@@ -43,7 +43,8 @@ echo "::endgroup::"
 
 echo "::group:: Switch to LTS Kernel"
 
-# Install LTS Kernel
+# Since kernel 6.16 there has been a bug where the system completely freezes whenever the
+# screen turns off or the system suspends. The 6.15 kernel is EoL, so use the 6.12 LTS kernel instead.
 for pkg in kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra; do
     rpm --erase $pkg --nodeps
 done
@@ -67,8 +68,6 @@ cd /usr/lib/kernel/install.d \
 # instead of shims, could skip scriptlets: dnf install -y --setopt=tsflags=noscripts
 # but skipping all scriptlets for kernel install may not be safe
 
-KERNEL_LTS_VERSION="6.12"
-
 KERNEL_LTS_PACKAGES=(
     kernel-longterm
     kernel-longterm-core
@@ -76,7 +75,7 @@ KERNEL_LTS_PACKAGES=(
     kernel-longterm-modules-extra
 )
 
-copr_install_isolated "kwizart/kernel-longterm-$KERNEL_LTS_VERSION" "${KERNEL_LTS_PACKAGES[@]}"
+copr_install_isolated "kwizart/kernel-longterm-6.12" "${KERNEL_LTS_PACKAGES[@]}"
 
 # restore kernel install
 mv -f 05-rpmostree.install.bak 05-rpmostree.install \
@@ -86,6 +85,24 @@ cd -
 dnf5 versionlock add "${KERNEL_LTS_PACKAGES[@]}"
 
 echo "LTS Kernel installed successfully"
+echo "::endgroup::"
+
+echo "::group:: Install Nvidia Drivers"
+
+# Exclude the Golang Nvidia Container Toolkit in Fedora Repo
+dnf5 config-manager setopt excludepkgs=golang-github-nvidia-container-toolkit
+
+# Install Nvidia RPMs
+curl -L "https://raw.githubusercontent.com/ublue-os/main/main/build_files/nvidia-install.sh" --create-dirs -o /tmp/nvidia-install.sh
+chmod +x /tmp/nvidia-install.sh
+IMAGE_NAME="bluefin-rbs-2019" RPMFUSION_MIRROR="" AKMODNV_PATH="/ctx/oci/nvidia-rpms" /tmp/nvidia-install.sh
+rm -f /usr/share/vulkan/icd.d/nouveau_icd.*.json
+ln -sf libnvidia-ml.so.1 /usr/lib64/libnvidia-ml.so
+tee /usr/lib/bootc/kargs.d/00-nvidia.toml <<EOF
+kargs = ["rd.driver.blacklist=nouveau", "modprobe.blacklist=nouveau", "nvidia-drm.modeset=1", "initcall_blacklist=simpledrm_platform_driver_init"]
+EOF
+
+echo "Nvidia installed successfully"
 echo "::endgroup::"
 
 echo "::group:: Install Packages"
