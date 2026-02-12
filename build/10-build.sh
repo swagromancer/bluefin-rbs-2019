@@ -41,20 +41,15 @@ cp /ctx/custom/flatpaks/*.preinstall /etc/flatpak/preinstall.d/
 
 echo "::endgroup::"
 
+# On kernel versions above 6.15 there is a bug where the system will freeze whenever the system suspends,
+# or whenever the laptop screen turns off. The 6.15 kernel is EoL, so use the 6.12 LTS kernel instead.
 echo "::group:: Switch to LTS Kernel"
 
-# Since kernel 6.16 there has been a bug where the system completely freezes whenever the
-# screen turns off or the system suspends. The 6.15 kernel is EoL, so use the 6.12 LTS kernel instead.
 for pkg in kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra; do
     rpm --erase $pkg --nodeps
 done
 
-# on F43, a new problem manifests where during kernel install, dracut errors and fails
-
-# shim to bypass all of kernel-install... safe?
-#mv /usr/sbin/kernel-install /usr/sbin/kernel-install.bak
-#printf '%s\n' '#!/bin/sh' 'exit 0' > /usr/sbin/kernel-install
-#mv -f /usr/sbin/kernel-install.bak /usr/sbin/kernel-install
+# On F43, a new problem manifests where during kernel install, dracut errors and fails
 
 # create a shim to bypass kernel install triggering dracut/rpm-ostree
 # seems to be minimal impact, but allows progress on build
@@ -65,14 +60,15 @@ cd /usr/lib/kernel/install.d \
 && printf '%s\n' '#!/bin/sh' 'exit 0' > 50-dracut.install \
 && chmod +x  05-rpmostree.install 50-dracut.install
 
-# instead of shims, could skip scriptlets: dnf install -y --setopt=tsflags=noscripts
-# but skipping all scriptlets for kernel install may not be safe
+# TODO: Better parameterize this value for CI
+KERNEL_LTS_VERSION="6.12.68-200.fc43.x86_64"
 
 KERNEL_LTS_PACKAGES=(
-    kernel-longterm
-    kernel-longterm-core
-    kernel-longterm-modules
-    kernel-longterm-modules-extra
+    kernel-longterm-"${KERNEL_LTS_VERSION}"
+    kernel-longterm-core-"${KERNEL_LTS_VERSION}"
+    kernel-longterm-modules-"${KERNEL_LTS_VERSION}"
+    kernel-longterm-modules-core-"${KERNEL_LTS_VERSION}"
+    kernel-longterm-modules-extra-"${KERNEL_LTS_VERSION}"
 )
 
 copr_install_isolated "kwizart/kernel-longterm-6.12" "${KERNEL_LTS_PACKAGES[@]}"
