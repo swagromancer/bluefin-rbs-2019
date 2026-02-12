@@ -41,6 +41,53 @@ cp /ctx/custom/flatpaks/*.preinstall /etc/flatpak/preinstall.d/
 
 echo "::endgroup::"
 
+echo "::group:: Switch to LTS Kernel"
+
+# Install LTS Kernel
+for pkg in kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra; do
+    rpm --erase $pkg --nodeps
+done
+
+# on F43, a new problem manifests where during kernel install, dracut errors and fails
+
+# shim to bypass all of kernel-install... safe?
+#mv /usr/sbin/kernel-install /usr/sbin/kernel-install.bak
+#printf '%s\n' '#!/bin/sh' 'exit 0' > /usr/sbin/kernel-install
+#mv -f /usr/sbin/kernel-install.bak /usr/sbin/kernel-install
+
+# create a shim to bypass kernel install triggering dracut/rpm-ostree
+# seems to be minimal impact, but allows progress on build
+cd /usr/lib/kernel/install.d \
+&& mv 05-rpmostree.install 05-rpmostree.install.bak \
+&& mv 50-dracut.install 50-dracut.install.bak \
+&& printf '%s\n' '#!/bin/sh' 'exit 0' > 05-rpmostree.install \
+&& printf '%s\n' '#!/bin/sh' 'exit 0' > 50-dracut.install \
+&& chmod +x  05-rpmostree.install 50-dracut.install
+
+# instead of shims, could skip scriptlets: dnf install -y --setopt=tsflags=noscripts
+# but skipping all scriptlets for kernel install may not be safe
+
+KERNEL_LTS_VERSION="6.12"
+
+KERNEL_LTS_PACKAGES=(
+    kernel-longterm
+    kernel-longterm-core
+    kernel-longterm-modules
+    kernel-longterm-modules-extra
+)
+
+copr_install_isolated "kwizart/kernel-longterm-$KERNEL_LTS_VERSION" "${KERNEL_LTS_PACKAGES[@]}"
+
+# restore kernel install
+mv -f 05-rpmostree.install.bak 05-rpmostree.install \
+&& mv -f 50-dracut.install.bak 50-dracut.install
+cd -
+
+dnf5 versionlock add "${KERNEL_LTS_PACKAGES[@]}"
+
+echo "LTS Kernel installed successfully"
+echo "::endgroup::"
+
 echo "::group:: Install Packages"
 
 # Install packages using dnf5
