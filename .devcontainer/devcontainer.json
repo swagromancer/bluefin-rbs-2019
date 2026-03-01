@@ -1,5 +1,13 @@
 // For format details, see https://aka.ms/devcontainer.json.
 {
     "name": "bluefin-rbs-2019-devcontainer",
-    "image": "ghcr.io/ublue-os/devcontainer:latest"
+    "image": "ghcr.io/ublue-os/devcontainer:latest",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "mkhl.shfmt", // Shell script formatter
+                "timonwong.shellcheck" // Shell script linter
+            ]
+        }
+    }
 }
