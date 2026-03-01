@@ -60,8 +60,8 @@ cd /usr/lib/kernel/install.d \
 && printf '%s\n' '#!/bin/sh' 'exit 0' > 50-dracut.install \
 && chmod +x  05-rpmostree.install 50-dracut.install
 
-# TODO: Better parameterize this value for CI
-KERNEL_LTS_VERSION="6.12.68-200.fc43.x86_64"
+# Derive the LTS kernel version from the Nvidia akmod built version
+KERNEL_LTS_VERSION=$(cat /ctx/oci/nvidia-rpms/kmods/nvidia-vars | grep KERNEL_VERSION | sed -e 's/^.*=//')
 
 KERNEL_LTS_PACKAGES=(
     kernel-longterm-"${KERNEL_LTS_VERSION}"
