@@ -109,6 +109,46 @@ echo "::group:: Install Packages"
 # Example using COPR with isolated pattern:
 # copr_install_isolated "ublue-os/staging" package-name
 
+# Base packages from Fedora repos - common to all versions
+readarray -t INCLUDED_PACKAGES < <(jq -r "[(.base.include)] \
+                            | sort | unique[]" /ctx/build/packages.json)
+
+# Install all Fedora packages (bulk - safe from COPR injection)
+echo "Installing ${#INCLUDED_PACKAGES[@]} packages from Fedora repos..."
+dnf5 -y install "${INCLUDED_PACKAGES[@]}"
+
+dnf5 config-manager addrepo --from-repofile=https://pkgs.tailscale.com/stable/fedora/tailscale.repo
+dnf5 config-manager setopt tailscale-stable.enabled=0
+dnf5 -y install --enablerepo='tailscale-stable' tailscale
+
+# From che/nerd-fonts
+copr_install_isolated "che/nerd-fonts" "nerd-fonts"
+
+# From ublue-os/packages
+copr_install_isolated "ublue-os/packages" "uupd"
+
+# Packages to exclude
+readarray -t EXCLUDED_PACKAGES < <(jq -r "[(.base.exclude)] \
+                            | sort | unique[]" /ctx/build/packages.json)
+
+# Remove excluded packages if they are installed
+if [[ "${#EXCLUDED_PACKAGES[@]}" -gt 0 ]]; then
+    readarray -t INSTALLED_EXCLUDED < <(rpm -qa --queryformat='%{NAME}\n' "${EXCLUDED_PACKAGES[@]}" 2>/dev/null || true)
+    if [[ "${#INSTALLED_EXCLUDED[@]}" -gt 0 ]]; then
+        echo "Removing ${#INCLUDED_PACKAGES[@]} packages..."
+        dnf5 -y remove "${INSTALLED_EXCLUDED[@]}"
+    else
+        echo "No excluded packages found to remove."
+    fi
+fi
+
+# Fix for ID in fwupd
+dnf5 -y copr enable ublue-os/staging
+dnf5 -y copr disable ublue-os/staging
+dnf5 -y swap \
+    --repo=copr:copr.fedorainfracloud.org:ublue-os:staging \
+    fwupd fwupd
+
 echo "::endgroup::"
 
 echo "::group:: System Configuration"
