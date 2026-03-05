@@ -6,19 +6,6 @@ This directory contains build scripts that run during image creation. Scripts ar
 
 Scripts are named with a number prefix (e.g., `10-build.sh`, `20-onepassword.sh`) and run in ascending order during the container build process.
 
-## Included Scripts
-
-- **`10-build.sh`** - Main build script for base system modifications, package installation, and service configuration
-
-## Example Scripts
-
-- **`20-onepassword.sh.example`** - Example showing how to install software from third-party RPM repositories (Google Chrome, 1Password)
-
-To use an example script:
-1. Remove the `.example` extension
-2. Make it executable: `chmod +x build/20-yourscript.sh`
-3. The build system will automatically run it in numerical order
-
 ## Creating Your Own Scripts
 
 Create numbered scripts for different purposes:
@@ -34,11 +21,24 @@ Create numbered scripts for different purposes:
 ### Script Template
 
 ```bash
-#!/usr/bin/env bash
-set -oue pipefail
+#!/usr/bin/bash
+
+set -eoux pipefail
+
+###############################################################################
+# {WHAT} Script
+###############################################################################
+# {DESCRIPTION}
+#
+# This script follows the @ublue-os/bluefin pattern for build scripts.
+# It uses set -eoux pipefail for strict error handling and debugging.
+###############################################################################
 
 echo "Running custom setup..."
+
 # Your commands here
+
+echo "Custom setup ran successfully"
 ```
 
 ### Best Practices
@@ -60,7 +60,7 @@ To temporarily disable a script without deleting it:
 The Containerfile runs scripts like this:
 
 ```dockerfile
-RUN /ctx/build/10-build.sh
+RUN /ctx/build/build.sh
 ```
 
 If you want to run multiple scripts, you can:
