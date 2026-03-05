@@ -5,19 +5,21 @@ set -eoux pipefail
 ###############################################################################
 # Nvidia Driver Install Script
 ###############################################################################
+# Installs Nvidia drivers from the @ublue-os/akmods-nvidia-open image.
+#
 # This script follows the @ublue-os/bluefin pattern for build scripts.
 # It uses set -eoux pipefail for strict error handling and debugging.
 ###############################################################################
 
 # Source helper functions
 # shellcheck source=/dev/null
-source /ctx/build/copr-helpers.sh
+source /ctx/build/utils/gh-curl.sh
 
 # Exclude the Golang Nvidia Container Toolkit in Fedora Repo
 dnf5 config-manager setopt excludepkgs=golang-github-nvidia-container-toolkit
 
 # Install Nvidia RPMs
-curl -sSL "https://raw.githubusercontent.com/ublue-os/main/main/build_files/nvidia-install.sh" --create-dirs -o /tmp/nvidia-install.sh
+ghcurl "https://raw.githubusercontent.com/ublue-os/main/main/build_files/nvidia-install.sh" --create-dirs -o /tmp/nvidia-install.sh
 chmod +x /tmp/nvidia-install.sh
 IMAGE_NAME="bluefin-rbs-2019" RPMFUSION_MIRROR="" AKMODNV_PATH="/ctx/oci/nvidia-rpms" /tmp/nvidia-install.sh
 rm -f /usr/share/vulkan/icd.d/nouveau_icd.*.json

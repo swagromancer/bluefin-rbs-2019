@@ -9,10 +9,6 @@ set -eoux pipefail
 # It uses set -eoux pipefail for strict error handling and debugging.
 ###############################################################################
 
-# Source helper functions
-# shellcheck source=/dev/null
-source /ctx/build/copr-helpers.sh
-
 # Enable nullglob for all glob operations to prevent failures on empty matches
 shopt -s nullglob
 

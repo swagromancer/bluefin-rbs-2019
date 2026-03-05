@@ -5,6 +5,8 @@ set -eoux pipefail
 ###############################################################################
 # Copy Custom Files Script
 ###############################################################################
+# Copies customization files found in the ./custom directory in this repo.
+#
 # This script follows the @ublue-os/bluefin pattern for build scripts.
 # It uses set -eoux pipefail for strict error handling and debugging.
 ###############################################################################

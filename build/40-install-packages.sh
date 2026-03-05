@@ -5,13 +5,15 @@ set -eoux pipefail
 ###############################################################################
 # Package Install Script
 ###############################################################################
+# Installs packages from Fedora and COPR repos.
+#
 # This script follows the @ublue-os/bluefin pattern for build scripts.
 # It uses set -eoux pipefail for strict error handling and debugging.
 ###############################################################################
 
 # Source helper functions
 # shellcheck source=/dev/null
-source /ctx/build/copr-helpers.sh
+source /ctx/build/utils/copr-helpers.sh
 
 # Validate packages.json before attempting to parse it
 # This ensures builds fail fast if the JSON is malformed

@@ -5,17 +5,24 @@ set -eoux pipefail
 ###############################################################################
 # LTS Kernel Install Script
 ###############################################################################
+# Swaps the kernel out to an LTS version.
+#
+# On kernel versions above 6.15 the Razer Blade Stealth has an issue where it
+# freezes whenever the laptop screen turns off. Most commonly happens when
+# suspending, but has been observed in other cases where the screen turns off.
+#
+# Uncertain if this is a regression in the kernel or something else, needs
+# investigation.
+#
+# Until a later version of the kernel fixes the issue, we'll use 6.12 LTS kernel.
+#
 # This script follows the @ublue-os/bluefin pattern for build scripts.
 # It uses set -eoux pipefail for strict error handling and debugging.
 ###############################################################################
 
 # Source helper functions
 # shellcheck source=/dev/null
-source /ctx/build/copr-helpers.sh
-
-# On kernel versions above 6.15 there is a bug where the system freezes whenever it suspends or the
-# laptop screen turns off. The 6.15 kernel is EoL, so use the 6.12 LTS kernel instead.
-echo "::group:: Switch to LTS Kernel"
+source /ctx/build/utils/copr-helpers.sh
 
 for pkg in kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra; do
     rpm --erase $pkg --nodeps
