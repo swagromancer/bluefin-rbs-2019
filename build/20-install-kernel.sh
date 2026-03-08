@@ -24,6 +24,7 @@ source /ctx/build/utils/copr-helpers.sh
 #
 # Until a later version of the kernel fixes the issue, we'll use kernel-longterm.
 KERNEL_NAME="kernel-longterm"
+KERNEL_RPM_DIR="/ctx/oci/akmods/kernel"
 
 for pkg in kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra; do
     rpm --erase $pkg --nodeps
@@ -42,7 +43,7 @@ cd /usr/lib/kernel/install.d \
 echo "Installing kernel from mounted kernel-rpms..."
 
 # Extract kernel version from the first kernel rpm filename
-CACHED_VERSION=$(find /ctx/oci/kernel-rpms \
+CACHED_VERSION=$(find "${KERNEL_RPM_DIR}" \
 	-maxdepth 1 \
 	-regextype posix-extended \
 	-iregex ".*/${KERNEL_NAME}-[[:digit:]].*.rpm" \
@@ -52,8 +53,8 @@ CACHED_VERSION=$(find /ctx/oci/kernel-rpms \
 	sed -E "s/^${KERNEL_NAME}-//;s/\.rpm$//")
 
 if [[ -z "$CACHED_VERSION" ]]; then
-  echo "ERROR: Could not detect kernel version from /ctx/oci/kernel-rpms"
-  ls -la /ctx/oci/kernel-rpms
+  echo "ERROR: Could not detect kernel version from ${KERNEL_RPM_DIR}"
+  find "${KERNEL_RPM_DIR}"
   exit 1
 fi
 
@@ -69,7 +70,7 @@ INSTALL_PKGS=(
 
 RPM_NAMES=()
 for pkg in "${INSTALL_PKGS[@]}"; do
-  RPM_NAMES+=("/ctx/oci/kernel-rpms/$pkg-$CACHED_VERSION.rpm")
+  RPM_NAMES+=("${KERNEL_RPM_DIR}/${pkg}-${CACHED_VERSION}.rpm")
 done
 
 dnf5 -y install "${RPM_NAMES[@]}"

@@ -19,9 +19,7 @@ source /ctx/build/utils/gh-curl.sh
 dnf5 config-manager setopt excludepkgs=golang-github-nvidia-container-toolkit
 
 # Install Nvidia RPMs
-ghcurl "https://raw.githubusercontent.com/ublue-os/main/main/build_files/nvidia-install.sh" --create-dirs -o /tmp/nvidia-install.sh
-chmod +x /tmp/nvidia-install.sh
-IMAGE_NAME="bluefin-rbs-2019" RPMFUSION_MIRROR="" AKMODNV_PATH="/ctx/oci/nvidia-rpms" /tmp/nvidia-install.sh
+IMAGE_NAME="bluefin-rbs-2019" RPMFUSION_MIRROR="" AKMODNV_PATH="/ctx/oci/akmods" /ctx/oci/akmods/ublue-os/nvidia-install.sh
 rm -f /usr/share/vulkan/icd.d/nouveau_icd.*.json
 ln -sf libnvidia-ml.so.1 /usr/lib64/libnvidia-ml.so
 tee /usr/lib/bootc/kargs.d/00-nvidia.toml <<EOF
