@@ -23,6 +23,10 @@
             "git-credential-libsecret",
             "glow",
             "gnome-tweaks",
+            "gnome-shell-extension-appindicator",
+            "gnome-shell-extension-blur-my-shell",
+            "gnome-shell-extension-caffeine",
+            "gnome-shell-extension-dash-to-dock",
             "gnupg2-scdaemon",
             "gum",
             "hplip",
@@ -91,6 +95,21 @@
             "gnome-terminal-nautilus",
             "podman-docker",
             "yelp"
+        ]
+    },
+    "developer": {
+        "include": [
+            "android-tools",
+            "cascadia-code-fonts",
+            "iotop",
+            "p7zip",
+            "p7zip-plugins",
+            "podman-compose",
+            "podman-machine",
+            "podman-tui"
+        ],
+        "exclude": [
+            "mozilla-fira-mono-fonts"
         ]
     }
 }

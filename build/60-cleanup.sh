@@ -20,6 +20,9 @@ rm -rf /.gitkeep
 # Cleanup /var
 find /var/* -maxdepth 0 -type d \! -name cache \! -name log -exec rm -fr {} \;
 
+# Cleanup /run
+find /run/* -maxdepth 0 -type d -exec rm -fr {} \;
+
 # Recreate the /boot directory since bootc container lint doesn't like when things are in it
 # shellcheck disable=SC2114
 rm -rf /boot && mkdir -p /boot
