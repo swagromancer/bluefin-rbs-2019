@@ -12,15 +12,15 @@ set -eoux pipefail
 # Cleanup package manager
 dnf5 clean all
 
-# systemctl mask flatpak-add-fedora-repos.service
-# rm -f /usr/lib/systemd/system/flatpak-add-fedora-repos.service
-
-rm -rf /.gitkeep
-
 # Cleanup /var
 find /var/* -maxdepth 0 -type d \! -name cache \! -name log -exec rm -fr {} \;
+find /var/cache/* -maxdepth 0 -type d \! -name libdnf5 -exec rm -rf {} \;
 
-# Recreate the /boot directory since bootc container lint doesn't like when things are in it
+# Cleanup /run directories that make bootc container lint unhappy when they exist
+rm -rf /run/dnf
+rm -rf /run/selinux-policy
+
+# Recreate the /boot directory since things in here _also_ make bootc container lint unhappy
 # shellcheck disable=SC2114
 rm -rf /boot && mkdir -p /boot
 
