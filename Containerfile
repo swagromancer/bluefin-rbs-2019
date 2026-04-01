@@ -39,6 +39,7 @@ FROM scratch AS ctx
 
 COPY build /build
 COPY custom /custom
+COPY system_files /system_files
 # Copy from OCI containers to distinct subdirectories to avoid conflicts
 # Note: Renovate can automatically update these :latest tags to SHA-256 digests for reproducibility
 COPY --from=ghcr.io/projectbluefin/common:latest /system_files /oci/common
