@@ -15,11 +15,14 @@ set -eoux pipefail
 mkdir -p /usr/share/ublue-os/homebrew/
 cp /ctx/custom/brew/*.Brewfile /usr/share/ublue-os/homebrew/
 
-# Consolidate Just Files
+# Consolidate Just files
 find /ctx/custom/ujust -iname '*.just' -exec printf "\n\n" \; -exec cat {} \; >> /usr/share/ublue-os/just/60-custom.just
 
 # Copy Flatpak preinstall files
 mkdir -p /etc/flatpak/preinstall.d/
 cp /ctx/custom/flatpaks/*.preinstall /etc/flatpak/preinstall.d/
+
+# Copy system files
+cp -r /ctx/system_files/usr/* /usr
 
 echo "Custom files copied successfully"
