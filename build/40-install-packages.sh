@@ -65,4 +65,13 @@ dnf5 -y swap \
     --repo=copr:copr.fedorainfracloud.org:ublue-os:staging \
     fwupd fwupd
 
+# Swap flatpak with the one provided by ublue-os/flatpak-test (gives us preinstall)
+# TODO: remove this on next flatpak release when preinstall lands in Fedora
+dnf5 -y copr enable ublue-os/flatpak-test
+dnf5 -y copr disable ublue-os/flatpak-test
+dnf5 -y --repo=copr:copr.fedorainfracloud.org:ublue-os:flatpak-test swap flatpak flatpak
+dnf5 -y --repo=copr:copr.fedorainfracloud.org:ublue-os:flatpak-test swap flatpak-libs flatpak-libs
+dnf5 -y --repo=copr:copr.fedorainfracloud.org:ublue-os:flatpak-test swap flatpak-session-helper flatpak-session-helper
+dnf5 -y --repo=copr:copr.fedorainfracloud.org:ublue-os:flatpak-test install flatpak-debuginfo flatpak-libs-debuginfo flatpak-session-helper-debuginfo
+
 echo "Packages installed successfully"

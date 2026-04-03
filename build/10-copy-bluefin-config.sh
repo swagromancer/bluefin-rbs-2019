@@ -15,4 +15,7 @@ set -eoux pipefail
 mkdir -p /usr/share/ublue-os/just/
 cp -r /ctx/oci/common/bluefin/usr/share/ublue-os/just/* /usr/share/ublue-os/just/
 
+# Copy shared common config files from @projectbluefin/common
+find /ctx/oci/common/shared/usr -maxdepth 1 -name "/usr/lib/modprobe.d" -prune -o -exec cp -r {} /usr/ \;
+
 echo "Bluefin config files copied from @projectbluefin/common successfully"

@@ -11,8 +11,10 @@ set -eoux pipefail
 
 # TODO: Finish configuring services
 
+find /usr/lib/systemd/system/ | grep flatpak
+
 # Enable/disable systemd services
 systemctl enable podman.socket
-# Example: systemctl mask unwanted-service
+systemctl enable flatpak-preinstall.service
 
 echo "System configuration successful"
