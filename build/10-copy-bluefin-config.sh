@@ -18,4 +18,7 @@ cp -r /ctx/oci/common/bluefin/usr/share/ublue-os/just/* /usr/share/ublue-os/just
 # Copy shared common config files from @projectbluefin/common
 find /ctx/oci/common/shared/usr -maxdepth 1 -name "/usr/lib/modprobe.d" -prune -o -exec cp -r {} /usr/ \;
 
+# Copy Nvidia config files from @projectbluefin/common (includes workaround for https://github.com/flatpak/flatpak/issues/3907)
+cp -r /ctx/oci/common/nvidia/usr/* /usr/
+
 echo "Bluefin config files copied from @projectbluefin/common successfully"

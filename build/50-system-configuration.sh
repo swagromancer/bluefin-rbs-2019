@@ -16,5 +16,6 @@ find /usr/lib/systemd/system/ | grep flatpak
 # Enable/disable systemd services
 systemctl enable podman.socket
 systemctl enable flatpak-preinstall.service
+systemctl enable ublue-nvidia-flatpak-runtime-sync.service
 
 echo "System configuration successful"
