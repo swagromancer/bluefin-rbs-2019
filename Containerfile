@@ -42,13 +42,13 @@ COPY custom /custom
 COPY system_files /system_files
 # Copy from OCI containers to distinct subdirectories to avoid conflicts
 # Note: Renovate can automatically update these :latest tags to SHA-256 digests for reproducibility
-COPY --from=ghcr.io/projectbluefin/common:latest /system_files /oci/common
-COPY --from=ghcr.io/ublue-os/brew:latest /system_files /oci/brew
-COPY --from=ghcr.io/ublue-os/akmods-nvidia-open:longterm-6.12-43-x86_64 /kernel-rpms /oci/akmods/kernel
-COPY --from=ghcr.io/ublue-os/akmods-nvidia-open:longterm-6.12-43-x86_64 /rpms /oci/akmods
+COPY --from=ghcr.io/projectbluefin/common:latest@sha256:c963ca0007163eadf4108110c30b6f6dde1daf4a2002273a61be03ed46d909ab /system_files /oci/common
+COPY --from=ghcr.io/ublue-os/brew:latest@sha256:230f2563e08195d8af284ce7ba258fe62557d2bab106162f4a7e9465d0d6e01a /system_files /oci/brew
+COPY --from=ghcr.io/ublue-os/akmods-nvidia-open:longterm-6.12-43-x86_64@sha256:0fd8123181d9507232425cafc1577957a82d9f4bbc787cbff64c66cf59708e11 /kernel-rpms /oci/akmods/kernel
+COPY --from=ghcr.io/ublue-os/akmods-nvidia-open:longterm-6.12-43-x86_64@sha256:0fd8123181d9507232425cafc1577957a82d9f4bbc787cbff64c66cf59708e11 /rpms /oci/akmods
 
 # Base Image - GNOME included
-FROM ghcr.io/ublue-os/silverblue-main:latest
+FROM ghcr.io/ublue-os/silverblue-main:latest@sha256:5659d50a65ba5f732a6610b97bc7d974c618fac1bf2052e68364d4ccf8352e44
 
 ## Alternative base images, no desktop included (uncomment to use):
 # FROM ghcr.io/ublue-os/base-main:latest    
