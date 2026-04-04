@@ -13,6 +13,7 @@ set -eoux pipefail
 
 # Enable/disable systemd services
 systemctl enable podman.socket
-# Example: systemctl mask unwanted-service
+systemctl enable flatpak-preinstall.service
+systemctl enable ublue-nvidia-flatpak-runtime-sync.service
 
 echo "System configuration successful"

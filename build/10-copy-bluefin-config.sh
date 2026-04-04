@@ -15,4 +15,10 @@ set -eoux pipefail
 mkdir -p /usr/share/ublue-os/just/
 cp -r /ctx/oci/common/bluefin/usr/share/ublue-os/just/* /usr/share/ublue-os/just/
 
+# Copy the flatpak preinstall service file from @projectbluefin/common
+cp -r /ctx/oci/common/shared/usr/lib/systemd/system/flatpak-preinstall.service /usr/lib/systemd/system
+
+# Copy Nvidia config files from @projectbluefin/common (includes workaround for https://github.com/flatpak/flatpak/issues/3907)
+cp -r /ctx/oci/common/nvidia/usr/* /usr/
+
 echo "Bluefin config files copied from @projectbluefin/common successfully"
