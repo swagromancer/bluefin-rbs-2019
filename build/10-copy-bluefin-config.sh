@@ -21,4 +21,7 @@ cp -r /ctx/oci/common/shared/usr/lib/systemd/system/flatpak-preinstall.service /
 # Copy Nvidia config files from @projectbluefin/common (includes workaround for https://github.com/flatpak/flatpak/issues/3907)
 cp -r /ctx/oci/common/nvidia/usr/* /usr/
 
+# Copy Homebrew tarball and config files from @ublue-os/brew
+cp -r /ctx/oci/brew/* /
+
 echo "Bluefin config files copied from @projectbluefin/common successfully"
