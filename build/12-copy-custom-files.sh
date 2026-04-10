@@ -23,6 +23,6 @@ mkdir -p /etc/flatpak/preinstall.d/
 cp /ctx/custom/flatpaks/*.preinstall /etc/flatpak/preinstall.d/
 
 # Copy system files
-cp -r /ctx/system_files/usr/* /usr
+cp -r /ctx/system_files/* /
 
 echo "Custom files copied successfully"
