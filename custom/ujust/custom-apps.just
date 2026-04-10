@@ -61,6 +61,28 @@ install-jetbrains-toolbox:
 jetbrains-toolbox:
     @ujust install-jetbrains-toolbox
 
+# Install VSCode via Homebrew
+[group('Apps')]
+install-vscode:
+    #!/usr/bin/env bash
+
+    set -eou pipefail
+
+    echo "Installing VSCode via Homebrew..."
+    brew tap "ublue-os/tap"
+    brew install --cask "ublue-os/tap/visual-studio-code-linux"
+
+    if test ! -e "$HOME"/.config/Code/User/settings.json; then
+        echo "Generating pre-configured settings.json file..."
+        mkdir -p "$HOME"/.config/Code/User
+        cp -f /etc/skel/.config/Code/User/settings.json "$HOME"/.config/Code/User/settings.json
+    fi
+
+    echo "Installing remote development extensions..."
+    code --install-extension ms-vscode-remote.remote-containers
+    code --install-extension ms-vscode-remote.remote-ssh
+    code --install-extension ms-azuretools.vscode-containers
+
 # Install a Flatpak application from Flathub
 [group('Apps')]
 install-flatpak APP_ID:
@@ -68,13 +90,3 @@ install-flatpak APP_ID:
     echo "Installing {{ APP_ID }} from Flathub..."
     flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     flatpak install -y flathub {{ APP_ID }}
-
-# Example: Install VSCode via Flatpak
-[group('Apps')]
-install-vscode:
-    ujust install-flatpak com.visualstudio.code
-
-# Example: Install GIMP via Flatpak
-[group('Apps')]
-install-gimp:
-    ujust install-flatpak org.gimp.GIMP

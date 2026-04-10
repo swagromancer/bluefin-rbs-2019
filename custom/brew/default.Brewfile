@@ -20,6 +20,7 @@ brew "yq"                   # Process YAML, JSON, XML, CSV and properties docume
 # Development tools
 brew "gh"                   # GitHub CLI
 brew "git"                  # Git version control
+
 # Shell enhancements  
 brew "starship"             # Cross-shell prompt
 brew "zoxide"               # Smarter cd command
