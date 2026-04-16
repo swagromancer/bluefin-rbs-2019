@@ -98,5 +98,46 @@
             "podman-docker",
             "yelp"
         ]
+    },
+    "developer": {
+        "include": [
+            "android-tools",
+            "dbus-x11",
+            "edk2-ovmf",
+            "flatpak-builder",
+            "genisoimage",
+            "git-subtree",
+            "git-svn",
+            "iotop",
+            "libvirt",
+            "libvirt-nss",
+            "nicstat",
+            "numactl",
+            "osbuild-selinux",
+            "p7zip",
+            "p7zip-plugins",
+            "podman-compose",
+            "podman-machine",
+            "podman-tui",
+            "qemu",
+            "qemu-char-spice",
+            "qemu-device-display-virtio-gpu",
+            "qemu-device-display-virtio-vga",
+            "qemu-device-usb-redirect",
+            "qemu-img",
+            "qemu-system-x86-core",
+            "qemu-user-binfmt",
+            "qemu-user-static",
+            "sysprof",
+            "udica",
+            "util-linux-script",
+            "virt-manager",
+            "virt-v2v",
+            "virt-viewer",
+            "ydotool"
+        ],
+        "exclude": [
+            "mozilla-fira-mono-fonts"
+        ]
     }
 }
