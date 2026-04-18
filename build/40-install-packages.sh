@@ -24,7 +24,7 @@ if ! jq empty /ctx/build/packages.json 2>/dev/null; then
 fi
 
 # Base packages from Fedora repos - common to all versions
-readarray -t INCLUDED_PACKAGES < <(jq -r ".base.include | sort | unique[]" /ctx/build/packages.json)
+readarray -t INCLUDED_PACKAGES < <(jq -r "(.base.include, .developer.include) | sort | unique[]" /ctx/build/packages.json)
 
 # Install all Fedora packages (bulk - safe from COPR injection)
 if [[ "${#INCLUDED_PACKAGES[@]}" -gt 0 ]]; then
@@ -46,7 +46,7 @@ copr_install_isolated "che/nerd-fonts" "nerd-fonts"
 copr_install_isolated "ublue-os/packages" "uupd"
 
 # Packages to exclude
-readarray -t EXCLUDED_PACKAGES < <(jq -r ".base.exclude | sort | unique[]" /ctx/build/packages.json)
+readarray -t EXCLUDED_PACKAGES < <(jq -r "(.base.exclude, .developer.exclude) | sort | unique[]" /ctx/build/packages.json)
 
 # Remove excluded packages if they are installed
 if [[ "${#EXCLUDED_PACKAGES[@]}" -gt 0 ]]; then

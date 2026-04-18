@@ -7,6 +7,10 @@
 [Flatpak Preinstall app.zen_browser.zen]
 Branch=stable
 
+# Podman
+[Flatpak Preinstall io.podman_desktop.PodmanDesktop]
+Branch=stable
+
 # GNOME Core Applications
 [Flatpak Preinstall org.gnome.Calculator]
 Branch=stable
