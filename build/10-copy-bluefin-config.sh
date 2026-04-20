@@ -18,6 +18,9 @@ cp -r /ctx/oci/common/bluefin/usr/share/ublue-os/just/* /usr/share/ublue-os/just
 # Copy shared /usr/lib files from @projectbluefin/common (excluding modeprobe.d as it has an amd conf file we don't need)
 find /ctx/oci/common/shared/usr/lib/* -maxdepth 0 -type d \! -name modprobe.d -exec sh -c 'for f do cp -r $f/* /usr/lib/${f##*/}/;done' sh {} +
 
+# Copy bluefin systemd files from #projectbluefin/common
+cp -r /ctx/oci/common/bluefin/usr/lib/systemd/* /usr/lib/systemd/
+
 # Copy Nvidia config files from @projectbluefin/common (includes workaround for https://github.com/flatpak/flatpak/issues/3907)
 cp -r /ctx/oci/common/nvidia/usr/* /usr/
 
