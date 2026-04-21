@@ -48,7 +48,7 @@ COPY --from=ghcr.io/ublue-os/akmods-nvidia-open:longterm-6.12-43-x86_64@sha256:d
 COPY --from=ghcr.io/ublue-os/akmods-nvidia-open:longterm-6.12-43-x86_64@sha256:d1620f0e7f729e2c946269268f821aa84f4d31f8d49ddae3e0fadb4d2b711131 /rpms /oci/akmods
 
 # Base Image - GNOME included
-FROM ghcr.io/ublue-os/silverblue-main:latest@sha256:fe092d9fac84edcd75b92bb86bc8c0fbc06f4cd6b39e82c81d0cb1031d9adb4e
+FROM ghcr.io/ublue-os/silverblue-main:latest@sha256:9c85a8ba8ffa660338940ce8087d1b9c83f5931c40b371d137092b5dddc03a69
 
 ## Alternative base images, no desktop included (uncomment to use):
 # FROM ghcr.io/ublue-os/base-main:latest    
