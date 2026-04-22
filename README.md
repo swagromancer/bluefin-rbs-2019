@@ -122,63 +122,17 @@ sudo bootc switch ghcr.io/your-username/your-repo-name:stable
 sudo systemctl reboot
 ```
 
-## Optional: Enable Image Signing
-
-Image signing is disabled by default to let you start building immediately. However, signing is strongly recommended for production use.
-
-### Why Sign Images?
-
-- Verify image authenticity and integrity
-- Prevent tampering and supply chain attacks
-- Required for some enterprise/security-focused deployments
-- Industry best practice for production images
-
-### Setup Instructions
-
-1. Generate signing keys:
-```bash
-cosign generate-key-pair
-```
-
-This creates two files:
-- `cosign.key` (private key) - Keep this secret
-- `cosign.pub` (public key) - Commit this to your repository
-
-2. Add the private key to GitHub Secrets:
-   - Copy the entire contents of `cosign.key`
-   - Go to your repository on GitHub
-   - Navigate to Settings → Secrets and variables → Actions ([GitHub docs](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository))
-   - Click "New repository secret"
-   - Name: `SIGNING_SECRET`
-   - Value: Paste the entire contents of `cosign.key`
-   - Click "Add secret"
-
-3. Replace the contents of `cosign.pub` with your public key:
-   - Open `cosign.pub` in your repository
-   - Replace the placeholder with your actual public key
-   - Commit and push the change
-
-4. Enable signing in the workflow:
-   - Edit `.github/workflows/build.yml`
-   - Find the "OPTIONAL: Image Signing with Cosign" section.
-   - Uncomment the steps to install Cosign and sign the image (remove the `#` from the beginning of each line in that section).
-   - Commit and push the change
-
-5. Your next build will produce signed images!
-
-Important: Never commit `cosign.key` to the repository. It's already in `.gitignore`.
-
 ## Love Your Image? Let's Go to Production
 
 Ready to take your custom OS to production? Enable these features for enhanced security, reliability, and performance:
 
 ### Production Checklist
 
-- [ ] **Enable Image Signing** (Recommended)
+- [X] **Enable Image Signing** (Recommended)
   - Provides cryptographic verification of your images
   - Prevents tampering and ensures authenticity
   - See "Optional: Enable Image Signing" section above for setup instructions
-  - Status: **Disabled by default** to allow immediate testing
+  - Status: **Enabled**
 
 - [ ] **Enable SBOM Attestation** (Recommended)
   - Generates Software Bill of Materials for supply chain security
