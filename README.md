@@ -134,7 +134,7 @@ Ready to take your custom OS to production? Enable these features for enhanced s
   - See "Optional: Enable Image Signing" section above for setup instructions
   - Status: **Enabled**
 
-- [ ] **Enable SBOM Attestation** (Recommended)
+- [X] **Enable SBOM Attestation** (Recommended)
   - Generates Software Bill of Materials for supply chain security
   - Provides transparency about what's in your image
   - Requires image signing to be enabled first
@@ -144,7 +144,7 @@ Ready to take your custom OS to production? Enable these features for enhanced s
     3. Find the "OPTIONAL: SBOM Attestation" section around line 232
     4. Uncomment the "Add SBOM Attestation" step
     5. Commit and push
-  - Status: **Disabled by default** (requires signing first)
+  - Status: **Enabled**
 
 - [ ] **Enable Image Rechunking** (Recommended)
   - Optimizes bootc image layers for better update performance
