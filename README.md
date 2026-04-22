@@ -146,7 +146,7 @@ Ready to take your custom OS to production? Enable these features for enhanced s
     5. Commit and push
   - Status: **Enabled**
 
-- [ ] **Enable Image Rechunking** (Recommended)
+- [X] **Enable Image Rechunking** (Recommended)
   - Optimizes bootc image layers for better update performance
   - Reduces update sizes by 5-10x
   - Improves download resumability with evenly sized layers
@@ -154,7 +154,7 @@ Ready to take your custom OS to production? Enable these features for enhanced s
     1. Edit `.github/workflows/build.yml`
     2. Find the "Build Image" step
     3. Add a rechunk step after the build (see example below)
-  - Status: **Not enabled by default** (optional optimization)
+  - Status: **Enabled**
 
 #### Adding Image Rechunking
 
