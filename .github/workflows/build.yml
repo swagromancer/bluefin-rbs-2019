@@ -122,6 +122,10 @@ jobs:
 
       - name: Rechunk Image
         run: |
+          echo "Saving image to rootful storage ..."
+          podman save -o image.tar "localhost/${IMAGE_NAME}:${DEFAULT_TAG}"
+          sudo podman image load < image.tar
+          echo "... done."
           sudo podman run --rm --privileged \
             -v /var/lib/containers:/var/lib/containers \
             --entrypoint /usr/libexec/bootc-base-imagectl \
