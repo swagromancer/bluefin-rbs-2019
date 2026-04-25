@@ -142,10 +142,12 @@ jobs:
           DEFAULT_TAG: ${{ env.DEFAULT_TAG }}
           SYFT_CMD: ${{ steps.setup-syft.outputs.cmd }}
         run: |
-          podman save -o image.tar localhost/"${{ env.IMAGE_NAME }}:${{ env.DEFAULT_TAG }}"
+          # Incredibly hacky way of getting an image but syft just refuses to find podman
+          # on the runner and sudo also has problems (probably because we are building with rootless podman)
+          IMAGE_DIR="/home/runner/.local/share/containers/storage/overlay-images/$(podman image inspect --format '{{ .ID }}' localhost/${IMAGE}:${DEFAULT_TAG})"
           OUTPUT_PATH="$(mktemp -d)/sbom.json"
           export SYFT_PARALLELISM=$(($(nproc)*2))
-          $SYFT_CMD ./image.tar -o spdx-json=${OUTPUT_PATH}
+          $SYFT_CMD ${IMAGE_DIR} -o spdx-json=${OUTPUT_PATH}
           echo "OUTPUT_PATH=${OUTPUT_PATH}" >> $GITHUB_OUTPUT
 
       # These `if` statements are so that pull requests for your custom images do not make it publish any packages under your name without you knowing
