@@ -111,9 +111,9 @@ jobs:
         id: build_image
         run: |
           LABEL_ARGS=()
-          for label in ${{ steps.metadata.outputs.labels }}; do
+          while IFS= read -r label ; do
             LABEL_ARGS+=("--label" "$label")
-          done
+          done <<< ${{ steps.metadata.outputs.labels }}
           sudo buildah build \
             "${LABEL_ARGS[@]}" \
             --tag ${{ env.IMAGE_NAME }}:${{ env.DEFAULT_TAG}} \
