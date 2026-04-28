@@ -195,11 +195,14 @@ jobs:
             --key env://COSIGN_PRIVATE_KEY \
             "${IMAGE_FULL}@${DIGEST}"
 
-      # OPTIONAL: SBOM Attestation
+      # SBOM Attestation
       # Attaches SBOM (Software Bill of Materials) to your signed image for supply chain security.
       # Documentation: https://slsa.dev/spec/v1.0/requirements#provenance-available
       - name: Add SBOM Attestation
         if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        # Rekor's v1 API seems problematic, and since SBOM is optional we'd rather it not fail a build
+        # Example error: Post "https://rekor.sigstore.dev/api/v1/log/entries": giving up after 4 attempt(s)
+        continue-on-error: true
         env:
           IMAGE: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}
           DIGEST: ${{ steps.push.outputs.digest }}
