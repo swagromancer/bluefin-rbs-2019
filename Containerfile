@@ -42,7 +42,7 @@ COPY custom /custom
 COPY system_files /system_files
 # Copy from OCI containers to distinct subdirectories to avoid conflicts
 # Note: Renovate can automatically update these :latest tags to SHA-256 digests for reproducibility
-COPY --from=ghcr.io/projectbluefin/common:latest@sha256:88ece6ec0e3c59b332845603a1f9775b77d5b7ada6916edf6174a46c9233f955 /system_files /oci/common
+COPY --from=ghcr.io/projectbluefin/common:latest@sha256:2d45f52fbbcda5baebc9682357920878232d0b135871711fa8bc9560c1bdd47e /system_files /oci/common
 COPY --from=ghcr.io/ublue-os/brew:latest@sha256:48be52bde586f6637ce83f128bf9ba1580b7e4de4d093fed94bec587082850ce /system_files /oci/brew
 COPY --from=ghcr.io/ublue-os/akmods-nvidia-open:longterm-6.12-43-x86_64@sha256:bd2347ce956d7d5fbf6e02c2d43235b0bc09978369ae7fcfa646764d92796676 /kernel-rpms /oci/akmods/kernel
 COPY --from=ghcr.io/ublue-os/akmods-nvidia-open:longterm-6.12-43-x86_64@sha256:bd2347ce956d7d5fbf6e02c2d43235b0bc09978369ae7fcfa646764d92796676 /rpms /oci/akmods
